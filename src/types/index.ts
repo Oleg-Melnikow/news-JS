@@ -1,3 +1,5 @@
+type Status = 'ok' | 'error';
+
 interface Article {
   author: string;
   title: string;
@@ -6,10 +8,7 @@ interface Article {
   urlToImage: string;
   publishedAt: string;
   content: string;
-  source: {
-    id: string;
-    name: string;
-  };
+  source: Pick<Source, 'id' | 'name'>;
 }
 
 interface Source {
@@ -30,4 +29,21 @@ interface SourceClass {
   draw(data: Source[]): void;
 }
 
-export { Article, NewsClass, Source, SourceClass };
+interface AppViewClass {
+  news: NewsClass;
+  sources: SourceClass;
+  drawNews(data: ResponseNews): void;
+  drawSources(data: ResponseSources): void;
+}
+
+interface ResponseItems {
+  status: Status;
+  sources: Source[];
+  totalResults: number;
+  articles: Article[];
+}
+
+type ResponseSources = Omit<ResponseItems, 'articles' | 'totalResults'>;
+type ResponseNews = Omit<ResponseItems, 'sources'>;
+
+export { Article, NewsClass, Source, SourceClass, AppViewClass, ResponseSources, ResponseNews };

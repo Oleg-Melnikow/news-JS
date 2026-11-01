@@ -41,11 +41,17 @@ interface SourceClass {
   draw(data: Source[]): void;
 }
 
+interface MenuClass {
+  draw(): void;
+}
+
 interface AppViewClass {
   news: NewsClass;
   sources: SourceClass;
+  menu: MenuClass;
   drawNews(data: ResponseNews): void;
   drawSources(data: ResponseSources): void;
+  drawMenu(): void;
 }
 
 interface LoaderClass {
@@ -78,4 +84,5 @@ export {
   Params,
   StatusError,
   Target,
+  MenuClass,
 };

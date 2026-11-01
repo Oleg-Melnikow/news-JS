@@ -1,6 +1,7 @@
 type Status = 'ok' | 'error';
 type Callback<T = void> = (params: T) => void;
 type Params = { endpoint: string; options?: RequestOptions };
+type Target = Element | EventTarget | null;
 
 type RequestOptions = {
   [key: string]: string;
@@ -76,4 +77,5 @@ export {
   RequestOptions,
   Params,
   StatusError,
+  Target,
 };

@@ -1,37 +1,34 @@
+import { ResponseNews, ResponseSources } from 'interfaces/index';
 import AppLoader from './appLoader';
 
 class AppController extends AppLoader {
-  getSources(callback) {
-    super.getResp(
-      {
-        endpoint: 'sources',
-      },
-      callback
-    );
+  public getSources(callback: (data: ResponseSources) => void): void {
+    super.getResp({ endpoint: 'sources' }, callback);
   }
 
-  getNews(e, callback) {
-    let target = e.target;
-    const newsContainer = e.currentTarget;
+  public getNews(e: Event, callback: (data: ResponseNews) => void): void {
+    const target = e.target as HTMLElement;
+    const newsContainer = e.currentTarget as HTMLElement;
 
-    while (target !== newsContainer) {
-      if (target.classList.contains('source__item')) {
-        const sourceId = target.getAttribute('data-source-id');
-        if (newsContainer.getAttribute('data-source') !== sourceId) {
-          newsContainer.setAttribute('data-source', sourceId);
-          super.getResp(
-            {
-              endpoint: 'everything',
-              options: {
-                sources: sourceId,
-              },
-            },
-            callback
-          );
-        }
-        return;
+    // Метод .closest() заменяет весь цикл while и сам поднимается до нужного предка
+    const sourceItem = target.closest('.source__item');
+
+    // Проверяем, что клик был внутри источника и этот источник находится внутри нашего контейнера
+    if (sourceItem && newsContainer.contains(sourceItem)) {
+      const sourceId = sourceItem.getAttribute('data-source-id') ?? '';
+      const currentSourceId = newsContainer.getAttribute('data-source') ?? '';
+
+      // Если кликнули на новый источник, обновляем атрибут и делаем запрос
+      if (currentSourceId !== sourceId) {
+        newsContainer.setAttribute('data-source', sourceId);
+        super.getResp(
+          {
+            endpoint: 'everything',
+            options: { sources: sourceId },
+          },
+          callback
+        );
       }
-      target = target.parentNode;
     }
   }
 }

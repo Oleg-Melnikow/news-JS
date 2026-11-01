@@ -1,21 +1,26 @@
-class Loader {
-  constructor(baseLink, options) {
+import { LoaderClass, Callback, RequestOptions, Params, StatusError } from 'interfaces/index';
+
+class Loader implements LoaderClass {
+  readonly baseLink: string;
+  readonly options: RequestOptions;
+
+  constructor(baseLink: string, options: RequestOptions) {
     this.baseLink = baseLink;
     this.options = options;
   }
 
-  getResp(
-    { endpoint, options = {} },
-    callback = () => {
+  public getResp<T>(
+    { endpoint, options = {} }: Params,
+    callback: Callback<T> = (): void => {
       console.error('No callback for GET response');
     }
-  ) {
+  ): void {
     this.load('GET', endpoint, callback, options);
   }
 
-  errorHandler(res) {
+  private errorHandler(res: Response): Response {
     if (!res.ok) {
-      if (res.status === 401 || res.status === 404)
+      if (res.status === StatusError.Unauthorized || res.status === StatusError.NotFound)
         console.log(`Sorry, but there is ${res.status} error: ${res.statusText}`);
       throw Error(res.statusText);
     }
@@ -23,22 +28,25 @@ class Loader {
     return res;
   }
 
-  makeUrl(options, endpoint) {
-    const urlOptions = { ...this.options, ...options };
-    let url = `${this.baseLink}${endpoint}?`;
+  private makeUrl(options: RequestOptions, endpoint: string): string {
+    const urlOptions: Record<string, string> = { ...this.options, ...options };
 
-    Object.keys(urlOptions).forEach((key) => {
-      url += `${key}=${urlOptions[key]}&`;
-    });
+    // Используем современный URLSearchParams вместо ручной склейки строк
+    const searchParams = new URLSearchParams(urlOptions);
 
-    return url.slice(0, -1);
+    return `${this.baseLink}${endpoint}?${searchParams.toString()}`;
   }
 
-  load(method, endpoint, callback, options = {}) {
+  private load<T>(
+    method: string,
+    endpoint: string,
+    callback: Callback<T>,
+    options: RequestOptions = {}
+  ): void {
     fetch(this.makeUrl(options, endpoint), { method })
-      .then(this.errorHandler)
+      .then((res) => this.errorHandler(res))
       .then((res) => res.json())
-      .then((data) => callback(data))
+      .then((data: T) => callback(data))
       .catch((err) => console.error(err));
   }
 }

@@ -1,4 +1,15 @@
 type Status = 'ok' | 'error';
+type Callback<T = void> = (params: T) => void;
+type Params = { endpoint: string; options?: RequestOptions };
+
+type RequestOptions = {
+  [key: string]: string;
+};
+
+enum StatusError {
+  Unauthorized = 401,
+  NotFound = 404,
+}
 
 interface Article {
   author: string;
@@ -36,6 +47,12 @@ interface AppViewClass {
   drawSources(data: ResponseSources): void;
 }
 
+interface LoaderClass {
+  readonly baseLink: string;
+  readonly options: RequestOptions;
+  getResp<T>(params: Params, callback?: Callback<T>): void;
+}
+
 interface ResponseItems {
   status: Status;
   sources: Source[];
@@ -46,4 +63,17 @@ interface ResponseItems {
 type ResponseSources = Omit<ResponseItems, 'articles' | 'totalResults'>;
 type ResponseNews = Omit<ResponseItems, 'sources'>;
 
-export { Article, NewsClass, Source, SourceClass, AppViewClass, ResponseSources, ResponseNews };
+export {
+  Article,
+  NewsClass,
+  Source,
+  SourceClass,
+  AppViewClass,
+  ResponseSources,
+  ResponseNews,
+  LoaderClass,
+  Callback,
+  RequestOptions,
+  Params,
+  StatusError,
+};

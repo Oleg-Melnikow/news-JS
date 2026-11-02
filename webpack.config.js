@@ -14,13 +14,26 @@ const baseConfig = {
         use: ['style-loader', 'css-loader'],
       },
       { test: /\.ts$/i, use: 'ts-loader', exclude: /node_modules/ },
+      {
+        test: /\.(png|jpg|gif|json|xml|ico|svg)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8000,
+              name: 'images/[name].[ext]',
+            },
+          },
+        ],
+      },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.jpg', '.svg'],
     alias: {
       interfaces: path.resolve(__dirname, './src/types'),
       helpers: path.resolve(__dirname, './src/helpers'),
+      assets: path.resolve(__dirname, './src/assets'),
     },
   },
   output: {

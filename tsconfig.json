@@ -19,10 +19,11 @@
     "checkJs": false,
     "paths": {
       "interfaces/*": ["./src/types/*"],
-      "helpers/*": ["./src/helpers/*"]
+      "helpers/*": ["./src/helpers/*"],
+      "assets/*": ["./src/assets/*"]
     },
     "types": ["node"]
   },
-  "include": ["src/**/*"],
+  "include": ["./src/**/*", "index.d.ts"],
   "exclude": ["node_modules"]
 }

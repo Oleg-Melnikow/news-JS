@@ -1,5 +1,6 @@
 import { Article, NewsClass } from 'interfaces/index';
 import { findElement } from 'helpers/findElement';
+import { hiddenEmptyBlock } from 'helpers/hiddenEmptyBlock';
 import './news.css';
 
 class News implements NewsClass {
@@ -8,7 +9,7 @@ class News implements NewsClass {
 
     const fragment = document.createDocumentFragment();
     const newsItemTemp = document.querySelector<HTMLTemplateElement>('#newsItemTemp');
-    const newsBlock = document.querySelector('.news');
+    const newsBlock = document.querySelector<HTMLElement>('.news');
 
     if (!(newsItemTemp instanceof HTMLTemplateElement)) {
       return;
@@ -43,6 +44,12 @@ class News implements NewsClass {
 
     newsBlock.innerHTML = '';
     newsBlock.appendChild(fragment);
+
+    if (!data.length) {
+      hiddenEmptyBlock(true, 'News not found, Please choose another soources', newsBlock);
+    } else {
+      hiddenEmptyBlock(false, '', newsBlock);
+    }
   }
 }
 

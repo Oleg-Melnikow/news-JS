@@ -38,7 +38,7 @@ main {
   flex-direction: column;
   transition: 1s ease-in;
   max-width: 280px;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 110px);
   background-color: #444;
 }
 
@@ -61,7 +61,7 @@ main {
   align-items: center;
   gap: 10px;
   width: 100%;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 110px);
   overflow: auto;
 }
 
@@ -71,7 +71,7 @@ main {
   justify-content: center;
   width: 100%;
   padding: 0 10px;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 110px);
   color: white;
   text-align: center;
   font-weight: bold;
@@ -79,29 +79,29 @@ main {
 }
 
 footer {
-  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
+  padding: 10px 0;
 }
 
-footer .copyright {
-  font-size: 14px;
-  color: #777;
+footer {
   text-align: center;
 }
 
-footer .copyright a {
+footer a {
   color: #ccc;
   text-decoration: none;
 }
 
-footer .copyright a:hover {
-  color: #555;
+.rsschool-logo,
+.rsschool-logo img {
+  height: 40px;
 }
 
-footer .copyright:before {
-  content: '©';
+footer a:hover {
+  color: #555;
 }
 
 @media (max-width: 768px) {
@@ -111,5 +111,11 @@ footer .copyright:before {
 
   .drawer {
     display: none;
+  }
+}
+
+@media (max-width: 370px) {
+  footer {
+    flex-wrap: wrap;
   }
 }

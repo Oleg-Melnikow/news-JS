@@ -1,0 +1,30 @@
+#category {
+  background: #aaa;
+  padding: 10px;
+  width: 250px;
+  border: none;
+  font-size: 18px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.8);
+  border-radius: 5px;
+  outline: none;
+  text-transform: capitalize;
+}
+
+#category option {
+  padding: 5px;
+}
+
+#category option:checked,
+#category option:hover {
+  background: #444;
+  color: #cffd16;
+  cursor: pointer;
+}
+
+.controls {
+  display: flex;
+  width: 100%;
+  padding: 20px 10px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
+}

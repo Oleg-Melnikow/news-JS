@@ -5,36 +5,56 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const DotenvWebpackPlugin = require('dotenv-webpack');
 
 const baseConfig = {
-    entry: path.resolve(__dirname, './src/index.js'),
-    mode: 'development',
-    module: {
-        rules: [
-            {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+  entry: path.resolve(__dirname, './src/index.ts'),
+  mode: 'development',
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+      { test: /\.ts$/i, use: 'ts-loader', exclude: /node_modules/ },
+      {
+        test: /\.(png|jpg|gif|json|xml|ico|svg)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8000,
+              name: 'images/[name].[ext]',
             },
+          },
         ],
-    },
-    resolve: {
-        extensions: ['.js'],
-    },
-    output: {
-        filename: 'index.js',
-        path: path.resolve(__dirname, './dist'),
-    },
-    plugins: [
-        new DotenvWebpackPlugin(),
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, './src/index.html'),
-            filename: 'index.html',
-        }),
-        new CleanWebpackPlugin(),
+      },
     ],
+  },
+  resolve: {
+    extensions: ['.ts', '.js', '.jpg', '.svg'],
+    alias: {
+      interfaces: path.resolve(__dirname, './src/types'),
+      helpers: path.resolve(__dirname, './src/helpers'),
+      assets: path.resolve(__dirname, './src/assets'),
+    },
+  },
+  output: {
+    filename: 'index.js',
+    path: path.resolve(__dirname, './dist'),
+  },
+  plugins: [
+    new DotenvWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './src/index.html'),
+      filename: 'index.html',
+    }),
+    new CleanWebpackPlugin(),
+  ],
 };
 
 module.exports = ({ mode }) => {
-    const isProductionMode = mode === 'prod';
-    const envConfig = isProductionMode ? require('./webpack.prod.config') : require('./webpack.dev.config');
+  const isProductionMode = mode === 'prod';
+  const envConfig = isProductionMode
+    ? require('./webpack.prod.config')
+    : require('./webpack.dev.config');
 
-    return merge(baseConfig, envConfig);
+  return merge(baseConfig, envConfig);
 };

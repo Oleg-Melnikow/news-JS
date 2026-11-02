@@ -1,6 +1,7 @@
 import { Article, NewsClass } from 'interfaces/index';
 import { findElement } from 'helpers/findElement';
 import { hiddenEmptyBlock } from 'helpers/hiddenEmptyBlock';
+import logo from 'assets/placeholder.jpg';
 import './news.css';
 
 class News implements NewsClass {
@@ -25,7 +26,7 @@ class News implements NewsClass {
       if (idx % 2) findElement(newsClone, '.news__item').classList.add('alt');
 
       findElement(newsClone, '.news__meta-photo').style.backgroundImage =
-        `url(${item.urlToImage || 'img/news_placeholder.jpg'})`;
+        `url(${item.urlToImage || logo})`;
       findElement(newsClone, '.news__meta-author').textContent = item.author || item.source.name;
 
       findElement(newsClone, '.news__meta-date').textContent = item.publishedAt

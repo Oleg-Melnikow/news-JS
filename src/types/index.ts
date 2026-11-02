@@ -41,8 +41,12 @@ interface SourceClass {
   draw(data: Source[]): void;
 }
 
-interface MenuClass {
+interface Control {
   draw(): void;
+}
+
+interface MenuClass extends Control {
+  drawControls(): void;
 }
 
 interface AppViewClass {
@@ -85,4 +89,5 @@ export {
   StatusError,
   Target,
   MenuClass,
+  Control,
 };

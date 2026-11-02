@@ -1,9 +1,23 @@
-import { ResponseNews, ResponseSources } from 'interfaces/index';
+import { ResponseNews, ResponseSources, RequestOptions } from 'interfaces/index';
 import AppLoader from './appLoader';
 
 class AppController extends AppLoader {
-  public getSources(callback: (data: ResponseSources) => void): void {
-    super.getResp({ endpoint: 'sources' }, callback);
+  public getSources(callback: (data: ResponseSources) => void, e?: Event): void {
+    if (e && e.target instanceof HTMLSelectElement) {
+      const select = e.target;
+      const currentCategory = select.getAttribute('data-category') ?? '';
+
+      if (currentCategory !== select.value) {
+        select.setAttribute('data-category', select.value);
+      }
+
+      // Формируем параметры: если выбрано не 'all', передаем выбранную категорию
+      const params: RequestOptions = select.value !== 'all' ? { category: select.value } : {};
+
+      super.getResp({ endpoint: 'sources', options: params }, callback);
+    } else {
+      super.getResp({ endpoint: 'sources' }, callback);
+    }
   }
 
   public getNews(e: Event, callback: (data: ResponseNews) => void): void {

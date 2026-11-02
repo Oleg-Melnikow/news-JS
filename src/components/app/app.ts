@@ -14,6 +14,7 @@ class App {
 
   public start(): void {
     const sources = document.querySelector('.sources');
+    const category = document.getElementById('category');
 
     if (sources) {
       sources.addEventListener('click', (e: Event) =>
@@ -27,6 +28,13 @@ class App {
       this.view.drawSources(data);
       this.view.drawMenu();
     });
+    if (category) {
+      category.addEventListener('change', (e: Event) => {
+        this.controller.getSources((data: ResponseSources) => {
+          this.view.drawSources(data);
+        }, e);
+      });
+    }
   }
 }
 

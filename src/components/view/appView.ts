@@ -33,6 +33,7 @@ export class AppView implements AppViewClass {
 
   public drawMenu(): void {
     this.menu.draw();
+    this.menu.drawControls();
   }
 }
 

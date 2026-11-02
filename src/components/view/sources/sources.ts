@@ -16,6 +16,8 @@ class Sources implements SourceClass {
       return;
     }
 
+    sourcesBlock.innerHTML = '';
+
     data.forEach((item) => {
       const sourceClone = sourceItemTemp.content.cloneNode(true) as DocumentFragment;
 
